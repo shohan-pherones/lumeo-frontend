@@ -5,3 +5,4 @@ export { default as StoriesContainer } from "./StoriesContainer/StoriesContainer
 export { default as PostsContainerFilter } from "./PostsContainerFilter/PostsContainerFilter";
 export { default as PostsContainerView } from "./PostsContainerView/PostsContainerView";
 export { default as PostCard } from "./PostCard/PostCard";
+export { default as PostViewModal } from "./PostViewModal/PostViewModal";

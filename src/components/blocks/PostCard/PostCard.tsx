@@ -1,6 +1,8 @@
 "use client";
 
 import { Post } from "@/interfaces";
+import { eventBus } from "@/lib/eventBus";
+import { formatDistance } from "date-fns";
 import { Bookmark, Ellipsis, Heart, MessageCircle, Send } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -23,6 +25,10 @@ const PostCard = ({ post }: { post: Post }) => {
       ? createMockRouter()
       : // eslint-disable-next-line @typescript-eslint/no-require-imports
         require("next/navigation").useRouter();
+
+  const openPostModal = () => {
+    eventBus.publish("openModal", { type: "postView", data: post });
+  };
 
   return (
     <article className="flex flex-col gap-y-2 border-b border-gray-200 pb-2">
@@ -50,7 +56,11 @@ const PostCard = ({ post }: { post: Post }) => {
             >
               {post.user.fullname}
             </p>
-            <span className="text-sm opacity-50">1h ago</span>
+            <span className="text-sm opacity-50">
+              {formatDistance(post.createdAt, new Date(), {
+                addSuffix: true,
+              })}
+            </span>
           </div>
         </div>
         {/* RIGHT */}
@@ -59,7 +69,10 @@ const PostCard = ({ post }: { post: Post }) => {
         </button>
       </div>
       {/* POST ATTACHMENT */}
-      <figure className="aspect-video rounded overflow-hidden cursor-pointer">
+      <figure
+        onClick={openPostModal}
+        className="aspect-video rounded overflow-hidden cursor-pointer"
+      >
         <Image
           src={post.image}
           alt={post.body}
@@ -80,7 +93,7 @@ const PostCard = ({ post }: { post: Post }) => {
             <span className="cursor-pointer">{post.interactions.reacts}</span>
           </div>
           <div className="flex items-center gap-1">
-            <button className="cursor-pointer">
+            <button onClick={openPostModal} className="cursor-pointer">
               <MessageCircle />
             </button>
             <span className="cursor-pointer">{post.interactions.comments}</span>
