@@ -3,13 +3,26 @@
 import { Post } from "@/interfaces";
 import { Bookmark, Ellipsis, Heart, MessageCircle, Send } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+const createMockRouter = () => {
+  return {
+    push: (path: string) => {
+      console.log(`Navigation to: ${path}`);
+    },
+  };
+};
 
 const PostCard = ({ post }: { post: Post }) => {
   const [isMoreClicked, setIsMoreClicked] = useState<boolean>(false);
 
-  const router = useRouter();
+  const router =
+    typeof window !== "undefined" &&
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any)?.__STORYBOOK_PREVIEW__
+      ? createMockRouter()
+      : // eslint-disable-next-line @typescript-eslint/no-require-imports
+        require("next/navigation").useRouter();
 
   return (
     <article className="flex flex-col gap-y-2 border-b border-gray-200 pb-2">

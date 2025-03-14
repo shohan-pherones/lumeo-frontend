@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(inter.className, "antialiased")}>
         <Header />
-        <main>{children}</main>
+        <main className="container mx-auto max-w-7xl">{children}</main>
       </body>
     </html>
   );
